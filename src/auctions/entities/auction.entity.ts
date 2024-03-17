@@ -1,13 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { AuctionItem } from "./auction.item.entity";
 
 @Entity({name:"auctions"})
 export class Auction {
   @PrimaryGeneratedColumn()
   id: number;
+  @Column('nvarchar', { length:90 })
+  auctionName: string;
 
-  @Column('decimal', { precision: 10, scale: 2, default: 0  })
-  reservePrice: number;
+  @OneToMany(() => AuctionItem, auctionItem => auctionItem.auction)
+  items: AuctionItem[];
 
-  @Column('decimal', { precision: 10, scale: 2, default: 0 })
-  currentBid: number;
 }

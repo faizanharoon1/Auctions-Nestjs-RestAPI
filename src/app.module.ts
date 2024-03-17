@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { BidsModule } from './bids/bids.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auction } from './auctions/entities/auction.entity';
+import { AuctionItem } from './auctions/entities/auction.item.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { Auction } from './auctions/entities/auction.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [Auction],
+      entities: [Auction, AuctionItem],
       synchronize: true,
     }),
     AuctionsModule,

@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsArray, ValidateNested, IsNumber, IsOptional, IsString, ArrayNotEmpty } from 'class-validator';
 
-export class Item {
+export class AuctionItemDTO {
 
     @IsString()
     ItemId: string;
@@ -12,15 +12,14 @@ export class Item {
   }
 
   export class CreateAuctionDto {
-    @IsNumber()
-    reservePrice: number; // This field is required and must be a number.
-
+    @IsString()
+    auctionName: string;
   
     @IsArray()
     @ArrayNotEmpty()
     @ValidateNested({ each: true })
-    @Type(() => Item)
-    items: Item[]; // This field represents an array of items, each with a name and quantity.
+    @Type(() => AuctionItemDTO)
+    items: AuctionItemDTO[]; // This field represents an array of items, each with a name and quantity.
   }
 
 export class AuctionDto extends CreateAuctionDto {

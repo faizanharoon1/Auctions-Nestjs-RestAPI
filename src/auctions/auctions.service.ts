@@ -15,27 +15,33 @@ export class AuctionsService extends DatabaseService<Auction> {
   }
    async createAuction(createDto: CreateAuctionDto): Promise<AuctionDto> {
     const auction:Auction = await super.create({
-        reservePrice:createDto.reservePrice
+        auctionName:createDto.auctionName
     });
     return {
         auctionItemId:auction.id,
-        reservePrice:auction.reservePrice
+        bidderName:"",
+        currentBid:0,
+        auctionName:"",
+        items:null
+       // reservePrice:auction.reservePrice
     };
   }
   async getAuctionById(id: number): Promise<AuctionDto> {
     const auction= await this.auctionRepository.findOneBy({ id });
-    return {
-        auctionItemId:auction.id,
-        reservePrice:auction.reservePrice
-    };
+    return null;
+    // return {
+    //     auctionItemId:auction.id,
+    //     reservePrice:auction.reservePrice
+    // };
   }
 
    async getAll(): Promise<AuctionDto[]> { // Adjust the return type as needed
     const auctions = await super.findAll();
-    return auctions.map((auction) => ({
-        auctionItemId: auction.id, // Assuming id is a number and needs to be a string
-        reservePrice: auction.reservePrice,
-       // itemDescription: auction., // Assuming there's a 'description' field in the entity
-      }));
+    return null
+    // return auctions.map((auction) => ({
+    //     auctionItemId: auction.id, // Assuming id is a number and needs to be a string
+    //     reservePrice: auction.reservePrice,
+    //    // itemDescription: auction., // Assuming there's a 'description' field in the entity
+    //   }));
   }
 }
