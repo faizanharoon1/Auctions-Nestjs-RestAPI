@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Auction } from "./auction.entity";
 
 @Entity({name:"auction_items"})
@@ -6,10 +6,7 @@ export class AuctionItem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar', { length:90 })
-  itemId: string;
-
-  @Column('varchar', { length:90 })
+  @Column('varchar', { length: 255 })
   itemDescription: string;
 
   @ManyToOne(() => Auction, auction => auction.items)

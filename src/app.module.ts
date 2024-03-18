@@ -7,6 +7,8 @@ import { BidsModule } from './bids/bids.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auction } from './auctions/entities/auction.entity';
 import { AuctionItem } from './auctions/entities/auction.item.entity';
+import { AuctionitemsService } from './auctionitems/auctionitems.service';
+import { AuctionitemsModule } from './auctionitems/auctionitems.module';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { AuctionItem } from './auctions/entities/auction.item.entity';
       synchronize: true,
     }),
     AuctionsModule,
+    AuctionitemsModule,
     BidsModule
   ],
   controllers: [AppController], // Only AppController remains if it's application-wide
