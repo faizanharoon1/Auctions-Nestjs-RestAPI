@@ -1,5 +1,5 @@
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Auction } from "./auction.entity";
+import { Auction } from "../../entities/auction.entity";
 
 @Entity({name:"auction_items"})
 export class AuctionItem {

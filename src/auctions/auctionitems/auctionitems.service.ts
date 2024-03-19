@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auction } from 'src/auctions/entities/auction.entity';
-import { AuctionItem } from 'src/auctions/entities/auction.item.entity';
+import { AuctionItem } from 'src/auctions/auctionitems/entities/auction.item.entity';
 import { DatabaseService } from 'src/database/database.service';
 import { DeepPartial, Repository } from 'typeorm';
 

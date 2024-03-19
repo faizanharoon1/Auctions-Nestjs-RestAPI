@@ -9,26 +9,8 @@ export class BidsController {
 
   @Post()
   create(@Body() createBidDto: CreateBidDto) {
-    return this.bidsService.create(createBidDto);
+    return this.bidsService.submit_bid(createBidDto);
   }
 
-  @Get()
-  findAll() {
-    return this.bidsService.findAll();
-  }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bidsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBidDto: UpdateBidDto) {
-    return this.bidsService.update(+id, updateBidDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bidsService.remove(+id);
-  }
 }

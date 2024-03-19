@@ -6,15 +6,17 @@ import { ConfigModule } from '@nestjs/config';
 import { BidsModule } from './bids/bids.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auction } from './auctions/entities/auction.entity';
-import { AuctionItem } from './auctions/entities/auction.item.entity';
-import { AuctionitemsService } from './auctionitems/auctionitems.service';
-import { AuctionitemsModule } from './auctionitems/auctionitems.module';
+import { AuctionItem } from './auctions/auctionitems/entities/auction.item.entity';
+import { AuctionitemsModule } from './auctions/auctionitems/auctionitems.module';
+import { Bid } from './bids/entities/bid.entity';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    EventEmitterModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
@@ -22,7 +24,7 @@ import { AuctionitemsModule } from './auctionitems/auctionitems.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [Auction, AuctionItem],
+      entities: [Auction, AuctionItem, Bid],
       synchronize: true,
     }),
     AuctionsModule,

@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { AuctionItem } from "./auction.item.entity";
+import { AuctionItem } from "../auctionitems/entities/auction.item.entity";
+import { IsOptional } from "class-validator";
 
 @Entity({name:"auctions"})
 export class Auction {
@@ -13,6 +14,10 @@ export class Auction {
 
   @Column('decimal', { precision: 10, scale: 2 })
   reservePrice: number;
+
+  @Column()
+  @IsOptional()
+  bidderName: string;
 
   @Column('int')
   createdBy: number;
