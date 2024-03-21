@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Auction } from 'src/auctions/entities/auction.entity';
@@ -17,10 +17,12 @@ export class AuctionsService extends DatabaseService<Auction> {
     super(auctionRepository);
   }
    async createAuction(createDto: CreateAuctionDto): Promise<AuctionDto> {
+    if(createDto.items.length==0)
+           throw new BadRequestException(`Error:No item added.`);
     const auction:Auction = await super.create({
         auctionName:createDto.auctionName,
         reservePrice:createDto.reservePrice,
-        createdBy:1 // TODO pass userId
+        createdBy:createDto.userId // TODO pass Id from users DIMENSION table NOT IMPLEMENTED
     });
     // insert into items
     const itemsPromises = createDto.items.map(element =>
@@ -41,23 +43,16 @@ export class AuctionsService extends DatabaseService<Auction> {
 
     // return
     return {
-        auctionItemId:auction.id,
-        bidderName:"",
+        id:auction.id,
         currentBid:auction.currentBid,
-        reservePrice:auction.reservePrice,
         auctionName:auction.auctionName,
         items:mappedItems
-       // reservePrice:auction.reservePrice
     };
   }
   async getAuctionById(id: number): Promise<AuctionDto> {
     const auction= await this.auctionRepository.findOne({ where:{id}, relations:["items"] });
     return {
-        auctionItemId:auction.id,
-        bidderName:"",
-        currentBid:auction.currentBid,
-        reservePrice:auction.reservePrice,
-        auctionName:auction.auctionName,
+       ...auction,
         items:auction.items?.map(item => ({
           itemDescription: item.itemDescription,
           itemId:item.id
@@ -66,19 +61,28 @@ export class AuctionsService extends DatabaseService<Auction> {
     };
   }
 
-   async getAll(): Promise<AuctionDto[]> { // Adjust the return type as needed
-    const auctions = await super.findAll(["items"]);
-    return auctions.map((auction) => ({
-        auctionItemId: auction.id, // Assuming id is a number and needs to be a string
-        bidderName:"",
-        currentBid:auction.currentBid,
-        reservePrice:auction.reservePrice,
-        auctionName:auction.auctionName,
-        items:auction.items?.map(item => ({
-          itemDescription: item.itemDescription,
-          itemId:item.id
-          // Include other necessary fields from the AuctionItem entity
-        }))
-      }));
+    async getAll(page: number, pageSize: number): Promise<AuctionDto[]> {
+    // Calculate offset
+    const skip = (page - 1) * pageSize;
+
+    // Perform the query with pagination and relations
+    const [results, total] = await this.auctionRepository.findAndCount({
+      relations: ['items'], // Adjust relation based on your entity definition
+      take: pageSize,
+      skip: skip,
+    });
+
+    // Map results to DTOs 
+    const auctionsDto = results.map(auction => ({
+      ...auction,
+      totalRows: total,
+        items: auction.items.map(item => ({
+        itemDescription: item.itemDescription,
+        itemId: item.id,
+      
+      })),
+    }));
+
+    return auctionsDto;
   }
 }

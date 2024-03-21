@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
 import { AuctionDto, CreateAuctionDto } from './dto/create-auction-dto';
 
@@ -7,8 +7,11 @@ export class AuctionsController {
   constructor(private readonly auctionsService: AuctionsService) {}
 
   @Get()
-  findAll(): Promise<AuctionDto[]> {
-    return this.auctionsService.getAll();
+  findAll(
+    @Query('page') page: number = 1,
+    @Query('pageSize') pageSize: number = 5,
+  ): Promise<AuctionDto[]> {
+    return this.auctionsService.getAll(page, pageSize);
   }
 
   @Get(':id')
@@ -21,8 +24,6 @@ export class AuctionsController {
     return this.auctionsService.createAuction(createAuctionDto);
   }
 
-  // Placeholder for POST /bids
-  // This would likely involve injecting a BidsService and creating a method to handle bid submissions.
   @Post('/bids')
   createBid() {
     // Placeholder: Implement bid creation logic

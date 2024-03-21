@@ -18,8 +18,9 @@ export class Bid {
   auctionItem: Auction;
 
   @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP', // Automatically set on insert
+    type: 'datetime',
+    precision: 6, // for microseconds precision
+    default: () => 'CURRENT_TIMESTAMP(6)',
   })
   created: Date;
 }

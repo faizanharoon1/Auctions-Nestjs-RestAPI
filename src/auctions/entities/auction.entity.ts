@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, IsNull, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { AuctionItem } from "../auctionitems/entities/auction.item.entity";
 import { IsOptional } from "class-validator";
 
@@ -15,12 +15,12 @@ export class Auction {
   @Column('decimal', { precision: 10, scale: 2 })
   reservePrice: number;
 
-  @Column()
+@Column({ nullable: true }) 
   @IsOptional()
   bidderName: string;
 
-  @Column('int')
-  createdBy: number;
+ @Column('nvarchar', { length:50 })
+  createdBy: string;
   
   @Column({
     type: 'timestamp',
